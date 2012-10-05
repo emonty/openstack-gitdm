@@ -123,6 +123,7 @@ fifieldt fifieldt@unimelb.edu.au
 francois-charlier francois.charlier@enovance.com
 freyes freyes@tty.cl
 fujita-tomonori-lab fujita.tomonori@lab.ntt.co.jp
+fungi fungi@yuggoth.org
 gabriel-hurley gabriel@strikeawe.com
 gandelman-a adam.gandelman@canonical.com
 gandelman-a adamg@canonical.com
