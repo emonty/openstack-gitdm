@@ -1,0 +1,15 @@
+# project revisions
+openstack-ci acce2473f85e9a5677dfda6a0b4936f020637406..
+openstack-ci-puppet 17b2bda1a05304025f2a468a17dae70532012ca3..
+zuul
+jenkins-job-builder
+#pbr
+#devstack 12eebc1f39227370a1af74db34cc1bdea8e00bcc..
+devstack-gate 453271995e3439c0acfe5ecd679bfd3fd704b4d4..
+git-review 1.16..
+gerrit fd99f84ec086cc9985de2c45d19c5baffff1823e..
+gerritbot
+gerritlib
+meetbot 9758d001d2df6dabf541accbed7df877f4875fdc..
+openstack-nose 9352e909b8ab50c0e39059b5933759c7cedb9dcf..
+nose-html-output

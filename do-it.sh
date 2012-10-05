@@ -1,7 +1,7 @@
 #!/bin/bash
 
-GITBASE=~/git/openstack
-RELEASE=folsom
+GITBASE=~/src/openstack
+RELEASE=ci
 BASEDIR=$(pwd)
 CONFIGDIR=$(pwd)/openstack-config
 TEMPDIR=$(mktemp -d $(pwd)/dmtmp-XXXXXX)
@@ -17,6 +17,11 @@ grep -v '^#' ${CONFIGDIR}/${RELEASE} |
     while read project x; do
       cd ${GITBASE}/${project}
       git fetch origin 2>/dev/null
+        if [ "$project" = "gerrit" ] ; then
+            git checkout openstack/2.4.2
+        else
+            git checkout master
+        fi
     done
 
 echo "Generating git commit logs"
@@ -46,28 +51,20 @@ python gitdm -l 20 -n < "${TEMPDIR}/git-commits.log" > "${TEMPDIR}/git-stats.txt
 
 echo "Generating a list of bugs"
 cd ${BASEDIR}
-grep -v '^#' ${CONFIGDIR}/${RELEASE} |
-    while read project x; do
+project=openstack-ci
         ./tools/with_venv.sh python launchpad/buglist.py ${project} ${RELEASE} > "${TEMPDIR}/${project}-bugs.log"
         while read id person date x; do
             emails=$(awk "/^$person / {print \$2}" ${CONFIGDIR}/launchpad-ids.txt)
             echo $id $person $date $emails
         done < "${TEMPDIR}/${project}-bugs.log" > "${TEMPDIR}/${project}-bugs.log.new"
         mv "${TEMPDIR}/${project}-bugs.log.new" "${TEMPDIR}/${project}-bugs.log"
-    done
 
 echo "Generating launchpad statistics"
 cd ${BASEDIR}
-grep -v '^#' ${CONFIGDIR}/${RELEASE} |
-    while read project x; do
         grep -v '<unknown>' "${TEMPDIR}/${project}-bugs.log" |
             python lpdm -l 20 > "${TEMPDIR}/${project}-lp-stats.txt"
-    done
 
-grep -v '^#' ${CONFIGDIR}/${RELEASE} |
-    while read project x; do
         grep -v '<unknown>' "${TEMPDIR}/${project}-bugs.log" >> "${TEMPDIR}/lp-bugs.log"
-    done
 grep -v '<unknown>' "${TEMPDIR}/lp-bugs.log" |
     python lpdm -l 20 > "${TEMPDIR}/lp-stats.txt"
 
